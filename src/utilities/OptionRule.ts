@@ -36,8 +36,7 @@ export default class OptionRule {
     const number1 = BigInt(`0x${text}`)
     const number2 = BigInt(`0x${macAddress}`)
     const result = number1 ^ number2
-    let hexString = result.toString(16).padStart(8, '0'); // 將數字轉為十六進制並轉為大寫
-    return hexString
+    return result.toString(16).padStart(8, '0'); // 將數字轉為十六進制並轉為大寫
   } 
   
   Shift(text: string) { 
