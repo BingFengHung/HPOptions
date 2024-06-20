@@ -1,33 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import './App.css'
+import OptionRule from './utilities/OptionRule.ts';
+import type { FormData } from './types/FormData.ts'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [formData, setFormData] = useState<FormData>({ key: '', no: 0})
+  const [generate, setGenerate] = useState('')
+  
+  const optionRule = new OptionRule();
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    
+    const {key, no} = formData
+    const nValue = no; 
+    const nValuePadded = nValue.toString().padStart(7, '0'); 
+    const code8 = `A${nValuePadded}`;
+      
+    const newKey = optionRule.BackSort(key)
+    const decode = optionRule.Intro(code8, newKey);
+    setGenerate(decode)
+  }
+  
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData({...formData, [name]: value})
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="key">KEY：</label>
+        <input id="key" name="key" type="text" value={formData.key} onChange={handleInputChange} required></input>
+        <br></br>
+        
+        <label htmlFor="key">NO：</label>
+        <input id="no" name="no" type="number" value={formData.no} onChange={handleInputChange} required></input>
+        
+        <button type="submit">Generate</button>
+      </form>
+      
+      <div>{generate}</div>
     </>
   )
 }
