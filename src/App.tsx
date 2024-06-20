@@ -37,6 +37,7 @@ function App() {
         
         <label htmlFor="key">NO：</label>
         <input id="no" name="no" type="number" value={formData.no} onChange={handleInputChange} required></input>
+        <br></br>
         
         <button type="submit">Generate</button>
       </form>
